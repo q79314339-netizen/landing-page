@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Contact Landing Page</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  p {
+    margin-bottom: 30px;
+    color: #555;
+  }
+
+  button {
+    background-color: #25D366;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background-color: #1ebe5d;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Contact Us Now</h1>
+  <p>Click the button below to reach us on WhatsApp. Each click will open a different contact.</p>
+  <button id="nextBtn">Click to Contact</button>
+</div>
+
+<script>
+const links = [
+  "https://wa.me/8618850714009",
+  "https://wa.me/8619835300093",
+  "https://wa.me/8618042421517"
+];
+
+// Track current index, save in localStorage
+let index = parseInt(localStorage.getItem('linkIndex')) || 0;
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  // Open WhatsApp link in new tab
+  window.open(links[index], '_blank');
+
+  // Update index for next click
+  index = (index + 1) % links.length;
+
+  // Save index
+  localStorage.setItem('linkIndex', index);
+});
+</script>
+
+</body>
+</html>
