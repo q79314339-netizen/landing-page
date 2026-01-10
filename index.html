@@ -1,83 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhatsApp Contact Landing Page</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f0f4f8;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-
-  .container {
-    background: white;
-    padding: 30px 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-
-  h1 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-
-  p {
-    margin-bottom: 30px;
-    color: #555;
-  }
-
-  button {
-    background-color: #25D366;
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    font-size: 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  button:hover {
-    background-color: #1ebe5d;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Redirecting to WhatsApp...</title>
 </head>
 <body>
 
-<div class="container">
-  <h1>Contact Us Now</h1>
-  <p>Click the button below to reach us on WhatsApp. Each click will open a different contact.</p>
-  <button id="nextBtn">Click to Contact</button>
-</div>
-
 <script>
 const links = [
-  "https://wa.me/8618850714009",
-  "https://wa.me/8619835300093",
-  "https://wa.me/8618042421517"
+  "https://wa.me/8618159028424",
+  "https://wa.me/8618396503253",
+  "https://wa.me/8618050517014"
 ];
 
-// Track current index, save in localStorage
-let index = parseInt(localStorage.getItem('linkIndex')) || 0;
+// 读取 Cookie
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
 
-document.getElementById('nextBtn').addEventListener('click', () => {
-  // Open WhatsApp link in new tab
-  window.open(links[index], '_blank');
+// 写 Cookie（30 天）
+function setCookie(name, value) {
+  document.cookie = name + "=" + value + ";path=/;max-age=2592000";
+}
 
-  // Update index for next click
-  index = (index + 1) % links.length;
+// 第一次访问随机分配
+let idx = getCookie("wa_idx");
+if (idx === null) {
+  idx = Math.floor(Math.random() * links.length);
+  setCookie("wa_idx", idx);
+}
 
-  // Save index
-  localStorage.setItem('linkIndex', index);
-});
+// 自动跳转 WhatsApp
+window.location.replace(links[idx]);
 </script>
 
 </body>
