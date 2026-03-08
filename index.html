@@ -1,38 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Redirecting to WhatsApp...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxury Products Landing Page</title>
+
+<!-- Facebook Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '853640044397925');
+fbq('track', 'PageView');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=853640044397925&ev=PageView&noscript=1"/>
+</noscript>
+
+<style>
+body{font-family:'Arial',sans-serif;background:#fff;color:#111;margin:0;padding:0;}
+.container{max-width:1000px;margin:0 auto;padding:20px;}
+h1,h2{color:#FFD700;}
+p{color:#333;line-height:1.6;}
+
+/* 产品区布局 */
+.product-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.product-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.4s, box-shadow 0.4s;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  transition: transform 0.4s, filter 0.4s;
+}
+
+.product-card:hover img {
+  transform: scale(1.08) rotate(1deg);
+  filter: brightness(1.12);
+}
+
+.product-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 20px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+  color: #fff;
+  text-align: left;
+  transition: transform 0.4s;
+}
+
+.product-card:hover .product-info {
+  transform: translateY(-10px);
+}
+
+.product-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.wa-card-btn {
+  display: block;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.product-card:hover .wa-card-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wa-card-btn:hover {
+  background: #1ebe5d;
+}
+
+.product-card:hover {
+  transform: translateY(-12px) scale(1.05) rotate(1deg);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,215,0,0.4);
+}
+
+/* 手机端响应式 */
+@media(max-width: 768px) {
+  .product-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 <body>
 
+<div class="container">
+<h1>Masterfully Crafted Luxury</h1>
+<p>Explore our finest collection of bags and watches. Trusted by clients worldwide. Contact us easily via WhatsApp.</p>
+
+<!-- 产品区 -->
+<div class="section-block">
+  <h2>👜 Popular Products</h2>
+  <div class="product-gallery">
+    <!-- 女士包 -->
+    <div class="product-card">
+      <img src="https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-neverfull-mm--M46975_PM2_Front%20view.jpg" alt="Neverfull MM">
+      <div class="product-info">
+        <h3>Neverfull MM</h3>
+        <button class="wa-card-btn" onclick="trackProduct('Neverfull MM', this)">Contact via WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- 男士包 -->
+    <div class="product-card">
+      <img src="https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_M/louis-vuitton-messenger-bag--M43895_PM2_Front%20view.jpg" alt="Messenger Bag">
+      <div class="product-info">
+        <h3>Messenger Bag</h3>
+        <button class="wa-card-btn" onclick="trackProduct('Messenger Bag', this)">Contact via WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- 手表 -->
+    <div class="product-card">
+      <img src="https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_M/louis-vuitton-tambour-watch--Q1D010_PM2_Front%20view.jpg" alt="Tambour Watch">
+      <div class="product-info">
+        <h3>Tambour Watch</h3>
+        <button class="wa-card-btn" onclick="trackProduct('Tambour Watch', this)">Contact via WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 <script>
-const links = [
-  "https://wa.me/8613489920964",
-  "https://wa.me/8618850714009",
-  "https://wa.me/8617346286753"
-];
-
-// 读取 Cookie
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? match[2] : null;
+// WhatsApp 跳转与 Pixel 追踪
+const WA_LINK = "https://wa.me/8618396503253"; // 可替换为客服
+function trackProduct(name, el){
+  const eventId = 'evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+  fbq('track','ViewContent',{content_name:name,content_type:'product',value:1,currency:'USD'},{eventID:eventId});
+  setTimeout(()=>{window.location.href=WA_LINK},350);
 }
-
-// 写 Cookie（30 天）
-function setCookie(name, value) {
-  document.cookie = name + "=" + value + ";path=/;max-age=2592000";
-}
-
-// 第一次访问随机分配
-let idx = getCookie("wa_idx");
-if (idx === null) {
-  idx = Math.floor(Math.random() * links.length);
-  setCookie("wa_idx", idx);
-}
-
-// 自动跳转 WhatsApp
-window.location.replace(links[idx]);
 </script>
 
 </body>
