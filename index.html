@@ -224,23 +224,43 @@ p { color: #333; line-height: 1.6; text-align:center; max-width:700px; margin:0 
 </div>
 
 <script>
-// -------------------- 基础配置 --------------------
-// WhatsApp客服池
+// -------------------- WhatsApp 客服轮询核心逻辑 --------------------
+// 1. 客服列表配置
 const WA_POOL = [
     {name:"Alice", link:"https://wa.me/8618396503253"},
     {name:"Bob", link:"https://wa.me/8613062151120"},
     {name:"Charlie", link:"https://wa.me/8615205956592"},
     {name:"Diana", link:"https://wa.me/8618050517014"}
 ];
-let waIndex = 0;
-document.getElementById('waBadge').innerText = WA_POOL[waIndex].name;
 
-// 通用跳转WhatsApp函数（带Pixel事件触发）
+// 2. 从本地存储获取当前分配索引（保证同一客户始终对接同一客服）
+let currentWaIndex = localStorage.getItem('wa_assigned_index');
+// 如果是新客户（无存储记录），获取全局下一个待分配的客服索引
+if (!currentWaIndex) {
+    // 从本地存储获取全局分配计数（记录总共有多少客户访问）
+    let globalCount = parseInt(localStorage.getItem('wa_global_count') || 0);
+    // 按客服数量取模，实现轮询分配（0→Alice，1→Bob，2→Charlie，3→Diana，4→Alice...）
+    currentWaIndex = globalCount % WA_POOL.length;
+    // 更新全局计数（供下一个新客户使用）
+    localStorage.setItem('wa_global_count', globalCount + 1);
+    // 将当前分配的客服索引绑定到该客户（本地存储，有效期持久）
+    localStorage.setItem('wa_assigned_index', currentWaIndex);
+}
+// 转为数字类型
+currentWaIndex = parseInt(currentWaIndex);
+// 显示当前分配的客服名称
+document.getElementById('waBadge').innerText = WA_POOL[currentWaIndex].name;
+
+// 3. 通用跳转WhatsApp函数（带Pixel事件触发）
 function goWA(eventName, eventParams = {}) {
-    // 1. 触发Facebook Pixel事件（自定义事件+参数）
-    fbq('track', eventName, eventParams);
-    // 2. 跳转到WhatsApp
-    window.location.href = WA_POOL[waIndex].link;
+    // 触发Facebook Pixel事件（自定义事件+参数）
+    fbq('track', eventName, {
+        ...eventParams,
+        assigned_customer_service: WA_POOL[currentWaIndex].name, // 新增：记录分配的客服
+        customer_service_link: WA_POOL[currentWaIndex].link     // 新增：记录客服链接
+    });
+    // 跳转到当前分配的客服WhatsApp
+    window.location.href = WA_POOL[currentWaIndex].link;
 }
 
 // -------------------- Facebook Pixel 事件绑定 --------------------
