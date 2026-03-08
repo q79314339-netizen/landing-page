@@ -199,29 +199,65 @@ display:flex;flex-direction:column;align-items:center;justify-content:center;tex
 </div>
 
 <script>
-// WhatsApp Pool
+// ===== WhatsApp 轮询逻辑 =====
 const WA_POOL = [
-{name:"Alice", link:"https://wa.me/8618396503253", event:"WA_1"},
-{name:"Bob", link:"https://wa.me/8613062151120", event:"WA_2"},
-{name:"Charlie", link:"https://wa.me/8615205956592", event:"WA_3"},
-{name:"Diana", link:"https://wa.me/8618050517014", event:"WA_4"}
+  {name:"Alice", link:"https://wa.me/8618396503253", event:"WA_1"},
+  {name:"Bob", link:"https://wa.me/8613062151120", event:"WA_2"},
+  {name:"Charlie", link:"https://wa.me/8615205956592", event:"WA_3"},
+  {name:"Diana", link:"https://wa.me/8618050517014", event:"WA_4"}
 ];
-function getCookie(name){const m=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));return m?m[2]:null;}
-function setCookie(name,value){document.cookie=name+"="+value+";path=/;max-age=2592000";}
-let waIndex = getCookie('wa_idx');
-if(waIndex===null){let lastIndex=parseInt(getCookie('last_assigned_idx'))||-1;waIndex=(lastIndex+1)%WA_POOL.length;setCookie('wa_idx',waIndex);setCookie('last_assigned_idx',waIndex);}
+function getCookie(name){
+  const m=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
+  return m ? parseInt(m[2]) : null;
+}
+function setCookie(name,value,days=30){
+  const d=new Date();
+  d.setTime(d.getTime() + (days*24*60*60*1000));
+  document.cookie = `${name}=${value};path=/;expires=${d.toUTCString()}`;
+}
+function getWAIndex(){
+  let waIndex = getCookie('wa_idx');
+  if(waIndex === null || isNaN(waIndex)){
+    let lastIndex = getCookie('last_assigned_idx') ?? -1;
+    waIndex = (lastIndex + 1) % WA_POOL.length;
+    setCookie('wa_idx', waIndex);
+    setCookie('last_assigned_idx', waIndex);
+  }
+  return waIndex;
+}
+let waIndex = getWAIndex();
 document.getElementById('waBadge').innerText = WA_POOL[waIndex].name;
-function goWA(){const wa=WA_POOL[waIndex];const eventId='evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);fbq('track','Lead',{customer_name: wa.name},{eventID: eventId});fbq('track','Contact',{customer_name: wa.name},{eventID:eventId});fbq('trackCustom',wa.event,{customer_name:wa.name},{eventID:eventId});setTimeout(()=>{window.location.href=wa.link},350);}
+function goWA(){
+  const wa = WA_POOL[waIndex];
+  const eventId = 'evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+  fbq('track','Lead',{customer_name: wa.name},{eventID: eventId});
+  fbq('track','Contact',{customer_name: wa.name},{eventID: eventId});
+  fbq('trackCustom', wa.event,{customer_name: wa.name},{eventID: eventId});
+  setTimeout(()=>{window.location.href=wa.link},350);
+
+  // 更新下次轮询
+  waIndex = (waIndex + 1) % WA_POOL.length;
+  setCookie('wa_idx', waIndex);
+  document.getElementById('waBadge').innerText = WA_POOL[waIndex].name;
+}
 document.getElementById('waBtn').onclick = goWA;
 document.getElementById('floatWA').onclick = goWA;
 
-// Product Tracking
-function trackProduct(name, el){const eventId='evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);fbq('track','ViewContent',{content_name:name,content_type:'product',value:1,currency:'USD'},{eventID:eventId});goWA();}
+// ===== Product Tracking =====
+function trackProduct(name, el){
+  const eventId='evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+  fbq('track','ViewContent',{content_name:name,content_type:'product',value:1,currency:'USD'},{eventID:eventId});
+  goWA();
+}
 
-// Blog CTA
-function trackCTA(title){const eventId='evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);fbq('track','Lead',{content_name:title},{eventID:eventId});goWA();}
+// ===== Blog CTA =====
+function trackCTA(title){
+  const eventId='evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+  fbq('track','Lead',{content_name:title},{eventID:eventId});
+  goWA();
+}
 
-// Testimonials
+// ===== Testimonials =====
 const customerNames = ["Alice","Bob","Charlie","Diana","Ethan","Fiona","George","Hannah","Ivan","Julia","Kevin","Laura"];
 const allTestimonials = ["Great quality, fast delivery! Highly recommend.","Excellent service, very satisfied with my order.","Amazing products and very responsive WhatsApp support.","Products exceeded my expectations!","Very reliable supplier, smooth transaction.","Love the quality of the products, will order again.","Fast shipping and good communication.","Highly professional, very happy with my purchase"];
 function getRandomColor(){return "#"+Math.floor(Math.random()*16777215).toString(16);}
@@ -229,7 +265,12 @@ function getRandomTestimonials(n){const shuffled=allTestimonials.sort(()=>0.5-Ma
 function getRandomName(){return customerNames[Math.floor(Math.random()*customerNames.length)];}
 const track=document.getElementById('testimonialsTrack');
 const testimonials=getRandomTestimonials(3);
-testimonials.forEach(text=>{const name=getRandomName();const color1=getRandomColor();const color2=getRandomColor();const div=document.createElement('div');div.className='testimonial-card';div.innerHTML=`<div class="testimonial-avatar" style="background: linear-gradient(135deg, ${color1}, ${color2})">${name.charAt(0)}</div><p><strong>${name}:</strong> "${text}"</p>`;track.appendChild(div);});
+testimonials.forEach(text=>{
+  const name=getRandomName();const color1=getRandomColor();const color2=getRandomColor();
+  const div=document.createElement('div');div.className='testimonial-card';
+  div.innerHTML=`<div class="testimonial-avatar" style="background: linear-gradient(135deg, ${color1}, ${color2})">${name.charAt(0)}</div><p><strong>${name}:</strong> "${text}"</p>`;
+  track.appendChild(div);
+});
 const cards=track.children;let index=0;
 function showSlide(i){track.style.transform=`translateX(-${i*85}%)`;}
 setInterval(()=>{index=(index+1)%cards.length;showSlide(index);},3000);
