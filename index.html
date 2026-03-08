@@ -199,7 +199,7 @@ display:flex;flex-direction:column;align-items:center;justify-content:center;tex
 </div>
 
 <script>
-// ===== WhatsApp 轮询逻辑 =====
+// ===== 固定客服绑定逻辑 =====
 const WA_POOL = [
   {name:"Alice", link:"https://wa.me/8618396503253", event:"WA_1"},
   {name:"Bob", link:"https://wa.me/8613062151120", event:"WA_2"},
@@ -210,22 +210,21 @@ function getCookie(name){
   const m=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
   return m ? parseInt(m[2]) : null;
 }
-function setCookie(name,value,days=30){
+function setCookie(name,value,days=365){
   const d=new Date();
   d.setTime(d.getTime() + (days*24*60*60*1000));
   document.cookie = `${name}=${value};path=/;expires=${d.toUTCString()}`;
 }
-function getWAIndex(){
+function assignWA(){
   let waIndex = getCookie('wa_idx');
   if(waIndex === null || isNaN(waIndex)){
-    let lastIndex = getCookie('last_assigned_idx') ?? -1;
-    waIndex = (lastIndex + 1) % WA_POOL.length;
-    setCookie('wa_idx', waIndex);
-    setCookie('last_assigned_idx', waIndex);
+    // 第一次访问随机分配一个客服
+    waIndex = Math.floor(Math.random() * WA_POOL.length);
+    setCookie('wa_idx', waIndex, 365);
   }
   return waIndex;
 }
-let waIndex = getWAIndex();
+let waIndex = assignWA();
 document.getElementById('waBadge').innerText = WA_POOL[waIndex].name;
 function goWA(){
   const wa = WA_POOL[waIndex];
@@ -234,11 +233,6 @@ function goWA(){
   fbq('track','Contact',{customer_name: wa.name},{eventID: eventId});
   fbq('trackCustom', wa.event,{customer_name: wa.name},{eventID: eventId});
   setTimeout(()=>{window.location.href=wa.link},350);
-
-  // 更新下次轮询
-  waIndex = (waIndex + 1) % WA_POOL.length;
-  setCookie('wa_idx', waIndex);
-  document.getElementById('waBadge').innerText = WA_POOL[waIndex].name;
 }
 document.getElementById('waBtn').onclick = goWA;
 document.getElementById('floatWA').onclick = goWA;
