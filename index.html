@@ -215,17 +215,16 @@ function setCookie(name,value,days=365){
   d.setTime(d.getTime() + (days*24*60*60*1000));
   document.cookie = `${name}=${value};path=/;expires=${d.toUTCString()}`;
 }
-function assignWA(){
-  let waIndex = getCookie('wa_idx');
-  if(waIndex === null || isNaN(waIndex)){
-    // 第一次访问随机分配一个客服
-    waIndex = Math.floor(Math.random() * WA_POOL.length);
-    setCookie('wa_idx', waIndex, 365);
-  }
-  return waIndex;
+
+// ===== 这里指定客服绑定 =====
+let waIndex = getCookie('wa_idx');
+if(waIndex === null || isNaN(waIndex)){
+  waIndex = 0; // 0 = Alice, 1 = Bob, 2 = Charlie, 3 = Diana
+  setCookie('wa_idx', waIndex, 365);
 }
-let waIndex = assignWA();
+
 document.getElementById('waBadge').innerText = WA_POOL[waIndex].name;
+
 function goWA(){
   const wa = WA_POOL[waIndex];
   const eventId = 'evt_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
