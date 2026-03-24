@@ -3,53 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luxury Bags & Watches Collection</title>
+<title>Luxury Bags & Watches</title>
 
 <style>
-body{font-family:'Arial',sans-serif;margin:0;padding:0;color:#111;background:#fff;}
-h1,h2,h3,h4{margin:0;color:#FFD700;}
-p{color:#333;line-height:1.6;}
-.container{max-width:1200px;margin:0 auto;padding:20px;}
+body{font-family:Arial;margin:0;background:#fff;color:#111;}
+.hero{height:420px;background:url("https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-again--M25877_PM2_Front%20view.jpg") center/cover no-repeat;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff;text-align:center;}
+.hero h1{font-size:48px;}
+.hero p{font-size:18px;}
+button{cursor:pointer}
 
-.hero{
-height:420px;
-background:url("https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-again--M25877_PM2_Front%20view.jpg") center/cover no-repeat;
-display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:white;
+.lang-box{
+position:fixed;top:10px;right:10px;z-index:999;
 }
-.hero h1{font-size:48px;text-shadow:2px 2px 10px rgba(0,0,0,0.5);}
-.hero p{font-size:18px;margin-top:10px;}
-
-.wa-button-wrap{margin-top:20px;}
-.wa-button-wrap button{background:#25D366;color:white;border:none;padding:12px 25px;border-radius:12px;font-weight:bold;}
-
-.lang-switch{
-position:fixed;
-top:10px;
-right:10px;
-z-index:999;
-}
-.lang-switch button{
-margin-left:5px;
-padding:6px 10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:#FFD700;
+.lang-box button{
+margin-left:5px;padding:6px 10px;border:none;background:#FFD700;border-radius:6px;
 }
 
-.product-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin:50px 0;}
-.product-card img{width:100%;height:300px;object-fit:cover;border-radius:12px;}
+.container{padding:20px;max-width:1100px;margin:auto;}
+h2{color:#FFD700}
 
-@media(max-width:768px){
-.product-gallery{grid-template-columns:1fr;}
-}
+.product{margin:20px 0;}
 </style>
 </head>
 
 <body>
 
 <!-- 语言切换 -->
-<div class="lang-switch">
+<div class="lang-box">
 <button onclick="applyLanguage('en')">EN</button>
 <button onclick="applyLanguage('it')">IT</button>
 <button onclick="applyLanguage('fr')">FR</button>
@@ -57,47 +37,23 @@ background:#FFD700;
 
 <!-- Hero -->
 <div class="hero">
-<h1 id="hero_title">Luxury Bags & Watches</h1>
-<p id="hero_desc">Premium Quality | Direct Factory Supply | Worldwide Shipping</p>
-<div class="wa-button-wrap">
+<h1 id="title">Luxury Bags & Watches</h1>
+<p id="desc">Premium Quality | Direct Factory Supply | Worldwide Shipping</p>
 <button id="waBtn">Contact via WhatsApp</button>
-</div>
 </div>
 
 <div class="container">
 
 <h2 id="products">👜 Popular Products</h2>
+<div class="product">Neverfull MM</div>
+<div class="product">Messenger Bag</div>
+<div class="product">Tambour Watch</div>
 
-<div class="product-gallery">
-<div class="product-card">
-<img src="https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-neverfull-mm--M46975_PM2_Front%20view.jpg">
-</div>
-
-<div class="product-card">
-<img src="https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_M/louis-vuitton-messenger-bag--M43895_PM2_Front%20view.jpg">
-</div>
-
-<div class="product-card">
-<img src="https://us.louisvuitton.com/images/is/image/lv/1/PP_VP_M/louis-vuitton-tambour-watch--Q1D010_PM2_Front%20view.jpg">
-</div>
-</div>
-
-<h2 id="articles">📰 Latest Articles</h2>
-
-<div class="info-section">
 <h2 id="shipping">🚚 Shipping</h2>
-<ul>
-<li>Orders processed within 24 hours</li>
-<li>DHL / FedEx / UPS shipping</li>
-<li>Tracking number provided</li>
-</ul>
+<p id="shipText">Orders processed within 24 hours</p>
 
 <h2 id="payment">💰 Payment</h2>
-<ul>
-<li>PayPal</li>
-<li>Bank Transfer</li>
-</ul>
-</div>
+<p id="payText">PayPal / Bank Transfer</p>
 
 </div>
 
@@ -105,70 +61,83 @@ background:#FFD700;
 // ===== 多语言 =====
 const LANG = {
   en: {
-    hero_title: "Luxury Bags & Watches",
-    hero_desc: "Premium Quality | Direct Factory Supply | Worldwide Shipping",
-    contact_btn: "Contact via WhatsApp",
-    products: "👜 Popular Products",
-    articles: "📰 Latest Articles",
-    shipping: "🚚 Shipping",
-    payment: "💰 Payment"
+    title:"Luxury Bags & Watches",
+    desc:"Premium Quality | Direct Factory Supply | Worldwide Shipping",
+    btn:"Contact via WhatsApp",
+    products:"👜 Popular Products",
+    shipping:"🚚 Shipping",
+    payment:"💰 Payment",
+    shipText:"Orders processed within 24 hours",
+    payText:"PayPal / Bank Transfer"
   },
   it: {
-    hero_title: "Borse e Orologi di Lusso",
-    hero_desc: "Qualità Premium | Fabbrica Diretta | Spedizione Globale",
-    contact_btn: "Contatta su WhatsApp",
-    products: "👜 Prodotti Popolari",
-    articles: "📰 Ultimi Articoli",
-    shipping: "🚚 Spedizione",
-    payment: "💰 Pagamento"
+    title:"Borse e Orologi di Lusso",
+    desc:"Qualità Premium | Fabbrica Diretta | Spedizione Globale",
+    btn:"Contatta su WhatsApp",
+    products:"👜 Prodotti Popolari",
+    shipping:"🚚 Spedizione",
+    payment:"💰 Pagamento",
+    shipText:"Ordini elaborati entro 24 ore",
+    payText:"PayPal / Bonifico Bancario"
   },
   fr: {
-    hero_title: "Sacs et Montres de Luxe",
-    hero_desc: "Qualité Premium | Usine Directe | Livraison Mondiale",
-    contact_btn: "Contacter sur WhatsApp",
-    products: "👜 Produits Populaires",
-    articles: "📰 Articles Récents",
-    shipping: "🚚 Livraison",
-    payment: "💰 Paiement"
+    title:"Sacs et Montres de Luxe",
+    desc:"Qualité Premium | Usine Directe | Livraison Mondiale",
+    btn:"Contacter sur WhatsApp",
+    products:"👜 Produits Populaires",
+    shipping:"🚚 Livraison",
+    payment:"💰 Paiement",
+    shipText:"Commandes traitées sous 24 heures",
+    payText:"PayPal / Virement bancaire"
   }
 };
 
 // ===== 应用语言 =====
-function applyLanguage(lang) {
+function applyLanguage(lang){
   const t = LANG[lang];
 
-  document.getElementById("hero_title").innerText = t.hero_title;
-  document.getElementById("hero_desc").innerText = t.hero_desc;
-  document.getElementById("waBtn").innerText = t.contact_btn;
+  document.getElementById("title").innerText = t.title;
+  document.getElementById("desc").innerText = t.desc;
+  document.getElementById("waBtn").innerText = t.btn;
   document.getElementById("products").innerText = t.products;
-  document.getElementById("articles").innerText = t.articles;
   document.getElementById("shipping").innerText = t.shipping;
   document.getElementById("payment").innerText = t.payment;
+  document.getElementById("shipText").innerText = t.shipText;
+  document.getElementById("payText").innerText = t.payText;
 
   localStorage.setItem("lang", lang);
 }
 
-// ===== IP检测 =====
-async function detectLanguage() {
-  try {
-    const res = await fetch("https://ipapi.co/json/");
+// ===== 检测语言（关键优化版）=====
+async function detectLanguage(){
+
+  // ✅ 1. 先看浏览器语言（最稳）
+  const browserLang = navigator.language.toLowerCase();
+
+  if(browserLang.includes("it")) return applyLanguage("it");
+  if(browserLang.includes("fr")) return applyLanguage("fr");
+
+  // ✅ 2. 再用IP兜底
+  try{
+    const res = await fetch("https://ipinfo.io/json?token=YOUR_TOKEN");
     const data = await res.json();
 
-    let lang = "en";
-    if (data.country === "IT") lang = "it";
-    if (data.country === "FR") lang = "fr";
+    if(data.country === "IT") return applyLanguage("it");
+    if(data.country === "FR") return applyLanguage("fr");
 
-    applyLanguage(lang);
-  } catch {
+    applyLanguage("en");
+
+  }catch{
     applyLanguage("en");
   }
 }
 
-// ===== 启动逻辑 =====
-const savedLang = localStorage.getItem("lang");
-if (savedLang) {
-  applyLanguage(savedLang);
-} else {
+// ===== 启动 =====
+const saved = localStorage.getItem("lang");
+
+if(saved){
+  applyLanguage(saved);
+}else{
   detectLanguage();
 }
 </script>
